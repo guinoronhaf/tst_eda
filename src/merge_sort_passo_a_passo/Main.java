@@ -1,18 +1,35 @@
 package merge_sort_passo_a_passo;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
 
-	int[] a = {9, 1, 4, -1, 5, 9, 23, -3};
-	int[] b = {3, 5, 9};
-	int[] c = {1, 4, 7};
-	
-	int[] res = merge(b, c);
+	Scanner sc = new Scanner(System.in);
 
-	System.out.println(Arrays.toString(res));
+	String[] line = sc.nextLine().split(" ");
+	int[] vector = new int[line.length];
+
+	for (int i = 0; i < line.length; i++)
+	    vector[i] = Integer.parseInt(line[i]);
+
+	mergeSort(vector);
+	
+	sc.close();
+
+    }
+
+    private static int[] slice(int[] v, int ini, int fim) {
+
+	int[] res = new int[fim - ini + 1];
+	int j = 0;
+
+	for (int i = ini; i <= fim; i++)
+	    res[j++] = v[i];
+
+	return res;
 
     }
 
@@ -28,8 +45,12 @@ public class Main {
 		result[k++] = b[j++];
 	}
 
-	while (i < a.length) result[k++] = a[i++];
-	while (j < b.length) result[k++] = b[j++];
+	while (i < a.length)
+	    result[k++] = a[i++];
+	while (j < b.length)
+	    result[k++] = b[j++];
+	
+	System.out.println(Arrays.toString(result));
 
 	return result;
 
@@ -37,20 +58,17 @@ public class Main {
 
     public static int[] mergeSort(int[] v) {
 
-	int meio = (v.length - 1) / 2;
-	int[] comecoMeio = new int[meio + 1];
-	int[] meioFinal = new int[v.length - (meio + 1)];
-	for (int i = 0; i <= meio; i++)
-	    comecoMeio[i] = v[i];
-	for (int j = meio + 1; j <= v.length; j++)
-	    meioFinal[j] = v[j];
-	
-	if ((comecoMeio.length + meioFinal.length) <= 2)
-	    return merge(comecoMeio, meioFinal);
+	System.out.println(Arrays.toString(v));
 
-	mergeSort(comecoMeio);
-	mergeSort(meioFinal);
+	if (v.length > 1) {
+	    int meio = (v.length - 1) / 2;
+	    int[] part1 = slice(v, 0, meio);
+	    int[] part2 = slice(v, meio + 1, v.length - 1);
+	    return merge(mergeSort(part1), mergeSort(part2));
+	}
 
+	return v;
+	// [4, 2, 1, 3]
+    
     }
-
 }
