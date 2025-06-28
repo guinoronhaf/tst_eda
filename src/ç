@@ -1,0 +1,49 @@
+package radix_dois_digitos;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        int[] a = {5, 1, -7, 1, 4, 12, 0};
+    
+        System.out.println(highestValue(a));
+        System.out.println(lowestValue(a));
+    }
+
+    private static int highestValue(int[] a) {
+
+        int highest = a[0], i = 1;
+
+        while (i < a.length) {
+            if (a[i] > highest)
+                highest = a[i];
+            i++;
+        }
+
+        return highest;
+
+    }
+
+    private static int lowestValue(int[] a) {
+
+        int lowest = a[0], i = 1;
+
+        while (i < a.length) {
+            if (a[i] < lowest)
+                lowest = a[i];
+            i++;
+        }
+
+        return lowest;
+
+    }
+
+    private static int[] sort(int[] a) {
+
+        int highest = highestValue(a);
+        int lowest = lowestValue(a);
+
+        int[] c = new int[highest - lowest + 1];
+    }
+
+}
