@@ -1,5 +1,7 @@
 package inverte_pilha_index;
 
+import java.util.Scanner;
+
 public class Main {
 
     public static class Pilha {
@@ -52,20 +54,45 @@ public class Main {
  
     }
 
-    public static void inverte(int capacidade, int[] valores) {
+    public static void inverte(int capacidade, int index, int[] valores) {
+
+	Pilha pilha = new Pilha(capacidade);
+	int[] auxArray = new int[index + 1];
+	int cont = 0;
+
+	for (int i = 0; i < valores.length; i++)
+	    pilha.push(valores[i]);
+
+	while (cont <= index) {
+	    auxArray[cont++] = pilha.pop();
+	}
+
+	for (int i = 0; i < auxArray.length; i++)
+	    pilha.push(auxArray[i]);
+
+	pilha.imprimePilha();
+
     }
 
     public static void main(String[] args) {
 
-        Pilha p = new Pilha(5);
+	Scanner sc = new Scanner(System.in);
 
-        p.push(10);
-        p.push(20);
-        p.push(30);
-        p.push(40);
-        p.push(50);
+	int capacidade = Integer.parseInt(sc.nextLine());
 
-        p.imprimePilha();
+	String[] line = sc.nextLine().split(" ");
+	int[] values = new int[line.length];
+
+	for (int i = 0; i < line.length; i++)
+	    values[i] = Integer.parseInt(line[i]);
+
+	int index = Integer.parseInt(sc.nextLine());
+
+	System.out.println("-");
+
+	inverte(capacidade, index, values);
+
+	sc.close();
 
     }
 
