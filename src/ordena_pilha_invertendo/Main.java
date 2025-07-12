@@ -1,5 +1,7 @@
 package ordena_pilha_invertendo;
 
+import java.util.Scanner;
+
 public class Main {
 
     public static class Pilha {
@@ -16,8 +18,8 @@ public class Main {
 	    return this.topo == -1;
 	}
 
-	public boolean isFull() {
-	    return this.topo == this.pilha.length - 1;
+	public int size() {
+	    return this.topo + 1;
 	}
 
 	public void push(int k) {
@@ -32,15 +34,35 @@ public class Main {
 	    return this.pilha[this.topo];
 	}
 
-	public int size() {
-	    return this.topo + 1;
-	}
-
-	public int max(int index) {
+	public int indexOf(int k) {
 
 	    Pilha auxPilha = new Pilha(this.size());
-	    int cont = 0;
-	    int maior = this.peek();
+	    int auxIndex = 0;
+	    int index = -1;
+
+	    while (!this.isEmpty()) {
+		int current = this.pop();
+		auxPilha.push(current);
+		if (current == k) {
+		    index = auxIndex;
+		    break;
+		}
+		auxIndex++;
+	    }
+
+	    while (!auxPilha.isEmpty())
+		this.push(auxPilha.pop());
+
+	    return index;
+
+	}
+
+	public int getMax(int index) {
+
+	    Pilha auxPilha = new Pilha(this.size());
+	    int maior = this.pop();
+	    int cont = 1;
+	    auxPilha.push(maior);
 
 	    while (cont <= index) {
 		int current = this.pop();
@@ -57,64 +79,82 @@ public class Main {
 
 	}
 
-	public void inverte(int index) {
-	
+	public void reverse(int index) {
+
+	    int[] auxArray = new int[index + 1];
+	    int i = 0;
+
+	    while (i <= index)
+		auxArray[i++] = this.pop();
+
+	    for (int j = 0; j < auxArray.length; j++)
+		this.push(auxArray[j]);
+
 	}
 
-	public void imprimePilha() {
+	public void sort() {
 
 	    Pilha auxPilha = new Pilha(this.size());
 
 	    while (!this.isEmpty()) {
+		int max = this.getMax(this.size() - 1);
+		int indMax = this.indexOf(max);
+		this.reverse(indMax);
 		int current = this.pop();
 		auxPilha.push(current);
-		System.out.println(current);
 	    }
 
 	    while (!auxPilha.isEmpty())
 		this.push(auxPilha.pop());
 
-	}
-    
-    }
-
-    public static void ordena(Pilha p) {
+	    this.reverse(this.size() - 1);
 	
-	Pilha resPilha = new Pilha(p.size());
-	int i = 1;
-
-	while (i <= p.size()) {
-	    Pilha auxPilha = new Pilha(p.size());
-	    int max = p.max(p.size() - 1);
-	    resPilha.push(max);
-	    while (!p.isEmpty()) {
-		int current = p.pop();
-		if (current != max)
-		    auxPilha.push(current);
-	    }
-	    p = auxPilha;
-	    i++;
 	}
 
-	resPilha.imprimePilha();
+	@Override
+	public String toString() {
 
-	// 1 2 24 8 -1
+	    String rep = "";
+	    Pilha auxPilha = new Pilha(this.size());
+
+	    while (!this.isEmpty()) {
+		int current = this.pop();
+		auxPilha.push(current);
+		rep += Integer.toString(current);
+		if (!this.isEmpty())
+		    rep += "\n";
+	    }
+
+	    while (!auxPilha.isEmpty())
+		this.push(auxPilha.pop());
+
+	    return rep;
+	
+	}
     
     }
 
     public static void main(String[] args) {
 
-	Pilha p = new Pilha(5);
+	Scanner sc = new Scanner(System.in);
 
-	p.push(1);
-	p.push(2);
-	p.push(24);
-	p.push(8);
-	p.push(-1);
+	int capacidade = Integer.parseInt(sc.nextLine());
 
-	ordena(p);
+	String[] line = sc.nextLine().split(" ");
+
+	Pilha pilha = new Pilha(capacidade);
+
+	for (int i = 0; i < line.length; i++)
+	    pilha.push(Integer.parseInt(line[i]));
+
+	pilha.sort();
+
+	System.out.println("-");
+
+	System.out.println(pilha);
+
+	sc.close();
 
     }
-
 
 }
