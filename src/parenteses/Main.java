@@ -4,75 +4,88 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static class Pilha {
+    public static class Stack {
 
-        private int topo;
-        private char[] pilha;
+	private String[] stack;
+	private int top;
 
-        public Pilha(int capacity) {
-            this.topo = -1;
-            this.pilha = new char[capacity];
-        }
+	public Stack(int capacity) {
+	    this.stack = new String[capacity];
+	    this.top = -1;
+	}
 
-        public boolean isEmpty() {
-            return this.topo == -1;
-        }
+	public boolean isEmpty() {
+	    return this.top == -1;
+	}
 
-        public boolean isFull() {
-            return this.topo == this.pilha.length - 1;
-        }
+	public boolean isFull() {
+	    return this.top == this.stack.length - 1;
+	}
 
-        public int size() {
-            return this.topo + 1;
-        }
+	public void push(String s) {
+	
+	    if (this.isFull()) throw new RuntimeException();
 
-        public void push(char k) {
-            this.pilha[++this.topo] = k;
-        }
+	    this.stack[++this.top] = s;
 
-        public char pop() {
-            return this.pilha[this.topo--];
-        }
+	}
 
-        public char peek() {
-            return this.pilha[this.topo];
-        }
- 
+	public String peek() {
+		
+	    if (this.isEmpty()) throw new RuntimeException();
+
+	    return this.stack[this.top];
+
+	}
+
+	public String pop() {
+		
+	    if (this.isEmpty()) throw new RuntimeException();
+
+	    return this.stack[this.top--];
+
+	}
+
+	public int size() {
+	    return this.top + 1;
+	}
+
     }
 
-    public static String parenteses(String s) {
+    public static class Solution {
+	
+	public static boolean validateParenthesis(String s) {
 
-        char[] charS = s.toCharArray();
+	    Stack stack = new Stack(s.length());
 
-        Pilha pilha = new Pilha(charS.length);
+	    for (int i = 0; i < s.length(); i++) {
+		String character = s.charAt(i) + "";
+		if (character.equals("(")) {
+		    stack.push(character);
+		} else {
+		    if (stack.isEmpty()) return false;
+		    stack.pop();
+		}
+	    }
 
-        for (char c : charS) {
+	    return stack.isEmpty();
 
-            if (c == '(')
-                pilha.push(c);
-            if (c == ')') {
-                if (pilha.size() == 0)
-                    return "N";
-                pilha.pop();
-            }
-
-        }
-
-        if (pilha.size() == 0) return "S";
-
-        return "N";
+	}
 
     }
 
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
+	Scanner sc = new Scanner(System.in);
 
-        String s = sc.nextLine();
+	String s = sc.nextLine();
 
-        System.out.println(parenteses(s));
+	if (Solution.validateParenthesis(s))
+	    System.out.println("S");
+	else
+	    System.out.println("N");
 
-        sc.close();
+	sc.close();
 
     }
 
