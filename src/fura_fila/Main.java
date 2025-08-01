@@ -25,19 +25,24 @@ public class Main {
 	    this.size = 0;
 	}
 
-	private void moveToHead(int index) {
-	
-	    if (index < 0 || index >= this.size) throw new RuntimeException();
+	public void move(int currentIndex, int finalIndex) {
 
 	    Fila aux = new Fila(this.size);
 	    Fila result = new Fila(this.size);
+	    int currIdx = currentIndex;
+	    int finalIdx = 0;
 	    int count = 0;
 
-	    while (count < index) {
+	    while (finalIdx < finalIndex) {
+		result.addLast(this.removeFirst());
+		finalIdx++;
+	    }
+
+	    while (count < currentIndex - finalIndex) {
 		aux.addLast(this.removeFirst());
 		count++;
 	    }
-
+		
 	    result.addLast(this.removeFirst());
 
 	    while (!aux.isEmpty())
@@ -48,8 +53,7 @@ public class Main {
 
 	    this.clear();
 
-	    while (!result.isEmpty())
-		this.addLast(result.removeFirst());
+	    while (!result.isEmpty()) this.addLast(result.removeFirst());
 
 	}
  
@@ -106,11 +110,13 @@ public class Main {
 	public void priority(int index) {
 	
 	    int idx = index;
+	    int count = 0;
 
 	    while (idx < this.size) {
-		this.moveToHead(idx);
-		System.out.println(this.toString());
+		move(idx, count);
+		System.out.println(this);
 		idx++;
+		count++;
 	    }
 
 	}
@@ -128,19 +134,20 @@ public class Main {
 
     public static void main(String[] args) {
 
-	Fila f = new Fila(9);
+	Scanner sc = new Scanner(System.in);
 
-	f.addLast(0);
-	f.addLast(1);
-	f.addLast(2);
-	f.addLast(3);
-	f.addLast(4);
-	f.addLast(5);
-	f.addLast(6);
-	f.addLast(7);
-	f.addLast(8);
+	String[] line = sc.nextLine().split(" ");
 
-	f.priority(4);
+	Fila f = new Fila(line.length);
+
+	for (int i = 0; i < line.length; i++)
+	    f.addLast(Integer.parseInt(line[i]));
+
+	Integer index = Integer.parseInt(sc.nextLine());
+
+	f.priority(index);
+
+	sc.close();
 
     }
 
