@@ -1,95 +1,87 @@
 package inverte_pilha_sem_fila;
 
+import java.util.Arrays;
+
 public class Main {
+	
+    public static class Pilha {
+	
+	private int[] pilha;
+	private int topo;
 
-    public static class Stack {
+	public Pilha(int capacidade) {
+	    this.pilha = new int[capacidade];
+	    this.topo = -1;
+	}
 
-        private int[] stack;
-        private int top;
+	private void swapTwoFirst() {
 
-        public Stack(int capacity) {
-            this.stack = new int[capacity];
-            this.top = -1;
-        }
+	    if (this.size() < 2) throw new RuntimeException();
 
-        public boolean isEmpty() {
-            return this.top == -1;
-        }
+	    int first = this.pop();
+	    int second = this.pop();
 
-        public boolean isFull() {
-            return this.top == this.stack.length - 1;
-        }
+	    this.push(first);
+	    this.push(second);
 
-        public void push(int k) {
+	}
 
-            if (this.isFull()) throw new RuntimeException();
+	public boolean isEmpty() {
+	    return this.topo == -1;
+	}
 
-            this.stack[++this.top] = k;
+	public boolean isFull() {
+	    return this.topo == this.pilha.length - 1;
+	}
 
-        }
+	public void push(int k) {
 
-        public int peek() {
+	    if (this.isFull()) throw new RuntimeException();
 
-            if (this.isEmpty()) throw new RuntimeException();
+	    this.pilha[++this.topo] = k;
 
-            return this.stack[this.top];
+	}
 
-        }
+	public int peek() {
 
-        public int pop() {
+	    if (this.isEmpty()) throw new RuntimeException();
 
-            if (this.isEmpty()) throw new RuntimeException();
+	    return this.pilha[this.topo];
 
-            return this.stack[this.top--];
+	}
 
-        }
+	public int pop() {
 
-        public void reverse() {
-    
-            int operations = 0;
+	    if (this.isEmpty()) throw new RuntimeException();
 
-            while (operations < this.size) {
-                int lastIdx = 0;
-                while (lastIdx < this.size - operations) {
+	    return this.pilha[this.topo--];
 
-                }
-            }
+	}
 
-        }
+	public void reverse(int topo) {
+	}
 
-        public int size() {
-            return this.top + 1;
-        }
+	public int size() {
+	    return this.topo + 1;
+	}
 
-        @Override
-        public String toString() {
+	@Override
+	public String toString() {
+	    return Arrays.toString(this.pilha);
+	}
 
-            String stack = "";
-            Stack aux = new Stack(this.size());
-
-            while (!this.isEmpty()) {
-                int current = this.pop();
-                aux.push(current);
-                stack += current;
-                if (!this.isEmpty()) stack += "\n";
-            }
-
-            while (!aux.isEmpty()) this.push(aux.pop());
-
-            return stack;
-
-        }
     }
 
     public static void main(String[] args) {
 
-        Stack s = new Stack(3);
+	Pilha p = new Pilha(5);
 
-        s.push(1);
-        s.push(2);
-        s.push(4);
+	p.push(2);
+	p.push(3);
 
-        System.out.println(s);
+	p.swapTwoFirst();
+
+	System.out.println(p);
 
     }
 
