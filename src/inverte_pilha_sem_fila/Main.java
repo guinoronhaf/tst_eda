@@ -1,6 +1,6 @@
 package inverte_pilha_sem_fila;
 
-import java.util.Arrays;
+import java.util.Scanner;
 
 public class Main {
 	
@@ -14,15 +14,15 @@ public class Main {
 	    this.topo = -1;
 	}
 
-	private void swapTwoFirst() {
-
-	    if (this.size() < 2) throw new RuntimeException();
-
-	    int first = this.pop();
-	    int second = this.pop();
-
-	    this.push(first);
-	    this.push(second);
+	private void naBase(int k) {
+	
+	    if (this.isEmpty()) {
+		this.push(k);
+	    } else {
+		int l = this.pop();
+		naBase(k);
+		this.push(l);
+	    }
 
 	}
 
@@ -58,7 +58,14 @@ public class Main {
 
 	}
 
-	public void reverse(int topo) {
+	private void reverse() {
+
+	    if (this.isEmpty()) return;
+
+	    int l = this.pop();
+	    reverse();
+	    naBase(l);
+
 	}
 
 	public int size() {
@@ -67,21 +74,44 @@ public class Main {
 
 	@Override
 	public String toString() {
-	    return Arrays.toString(this.pilha);
+	
+	    String pilha = "";
+	    Pilha aux = new Pilha(this.size());
+
+	    while (!this.isEmpty()) {
+		int current = this.pop();
+		aux.push(current);
+		pilha += current;
+		if (!this.isEmpty()) pilha += "\n";
+	    }
+
+	    while (!aux.isEmpty())
+		this.push(aux.pop());
+
+	    return pilha;
+
 	}
 
     }
 
     public static void main(String[] args) {
 
-	Pilha p = new Pilha(5);
+	Scanner sc = new Scanner(System.in);
 
-	p.push(2);
-	p.push(3);
+	Integer capacity = Integer.parseInt(sc.nextLine());
 
-	p.swapTwoFirst();
+	Pilha p = new Pilha(capacity);
+
+	String[] line = sc.nextLine().split(" ");
+
+	for (int i = 0; i < line.length; i++)
+	    p.push(Integer.parseInt(line[i]));
+
+	p.reverse();
 
 	System.out.println(p);
+
+	sc.close();
 
     }
 
