@@ -37,6 +37,17 @@ public class Main {
 	    return this.key.equals(aux);
 
 	}
+
+	public int sumKey() {
+		
+	    int sum = 0;
+
+	    for (int i = 0; i < this.key.length(); i++)
+		sum += (int) this.key.charAt(i);
+
+	    return sum;
+
+	}
 	
 	@Override
 	public String toString() {
@@ -56,6 +67,17 @@ public class Main {
 		this.table[i] = new ArrayList<>();
 	}
 
+	private int sumKey(String s) {
+		
+	    int sum = 0;
+
+	    for (int i = 0; i < s.length(); i++)
+		sum += (int) s.charAt(i);
+
+	    return sum;
+
+	}
+
 	public int hash(int key) {
 	    return key % this.table.length;
 	}
@@ -64,7 +86,7 @@ public class Main {
 	
 	    if (this.containsKey(key)) return;
 
-	    int keyHash = hash(Math.abs(key.hashCode()));
+	    int keyHash = hash(sumKey(key));
 	    
 	    this.table[keyHash].add(new Edge(key, value));
 
@@ -72,7 +94,7 @@ public class Main {
 
 	public Integer get(String key) {
 		
-	    int keyHash = hash(Math.abs(key.hashCode()));
+	    int keyHash = hash(sumKey(key));
 	    ArrayList<Edge> edgeList = this.table[keyHash];
 	    int idx = 0;
 	    Integer value = null;
@@ -114,6 +136,32 @@ public class Main {
     public static void main(String[] args) {
 
 	Scanner sc = new Scanner(System.in);
+
+	String[] line = sc.nextLine().split(" ");
+
+	MyHashTable table = new MyHashTable(line.length * line.length);
+
+	for (int i = 0; i < line.length; i++) {
+	    String edge = line[i];
+	    String[] values = sc.nextLine().split(" ");
+	    for (int j = 0; j < values.length; j++) {
+		Integer value = Integer.parseInt(values[j]);
+		if (value != 0) {
+		    table.put(edge + line[j], value);
+		}
+	    }
+	}
+
+	String input = sc.nextLine();
+
+	while (!input.equals("fim")) {
+	    Integer value = table.get(input);
+	    if (value == null)
+		System.out.println("aresta inexistente.");
+	    else
+		System.out.println(value);
+	    input = sc.nextLine();
+	}
 
 	sc.close();
 
