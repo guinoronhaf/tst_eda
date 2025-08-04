@@ -4,73 +4,157 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static class Pilha {
+    public static class Queue {
 
-        private int topo;
-        private int[] pilha;
+	private int[] queue;
+	private int head;
+	private int tail;
+	private int size;
 
-        public Pilha(int capacidade) {
-            this.topo = -1;
-            this.pilha = new int[capacidade];
-        }
-
-        public boolean isEmpty() {
-            return this.topo == -1;
-        }
-
-        public boolean isFull() {
-            return this.topo == this.pilha.length - 1;
-        }
-
-        public int size() {
-            return this.topo + 1;
-        }
-
-        public void push(int k) {
-            this.pilha[++this.topo] = k;
-        }
-
-        public int pop() {
-            return this.pilha[this.topo--];
-        }
-
-        public int peek() {
-            return this.pilha[this.topo];
-        }
-
-        public void imprimePilha() {
-
-            Pilha auxPilha = new Pilha(this.size());
-
-            while (!this.isEmpty()) {
-                System.out.println(this.peek());
-                auxPilha.push(this.pop());
-            }
-
-            while (!auxPilha.isEmpty())
-                this.push(auxPilha.pop());
-
-        }
- 
-    }
-
-    public static void inverte(int capacidade, int index, int[] valores) {
-
-	Pilha pilha = new Pilha(capacidade);
-	int[] auxArray = new int[index + 1];
-	int cont = 0;
-
-	for (int i = 0; i < valores.length; i++)
-	    pilha.push(valores[i]);
-
-	while (cont <= index) {
-	    auxArray[cont++] = pilha.pop();
+	public Queue(int capacity) {
+	    this.queue = new int[capacity];
+	    this.head = -1;
+	    this.tail = -1;
+	    this.size = 0;
 	}
 
-	for (int i = 0; i < auxArray.length; i++)
-	    pilha.push(auxArray[i]);
+	public boolean isEmpty() {
+	    return this.head == -1;
+	}
 
-	pilha.imprimePilha();
+	public boolean isFull() {
+	    return this.size == this.queue.length;
+	}
+
+	public void addLast(int k) {
+	
+	    if (this.isFull()) throw new RuntimeException();
+
+	    if (this.isEmpty())
+		this.head++;
+
+	    this.tail = (this.tail + 1) % this.queue.length;
+
+	    this.queue[this.tail] = k;
+
+	    this.size++;
+
+	}
+
+	public int getFirst() {
+	
+	    if (this.isEmpty()) throw new RuntimeException();
+
+	    return this.queue[this.head];
+
+	}
+
+	public int removeFirst() {
+
+	    if (this.isEmpty()) throw new RuntimeException();
+
+	    int value = this.queue[this.head];
+	
+	    if (this.size == 1) {
+		this.head = -1;
+		this.tail = -1;
+	    } else {
+		this.head = (this.head + 1) % this.queue.length;
+	    }
+
+	    this.size--;
+
+	    return value;
+
+	}
+
+	public int size() {
+	    return this.size;
+	}
+    
+    }
+
+    public static class Stack {
+
+	private int[] stack;
+	private int top;
+
+	public Stack(int capacity) {
+	    this.stack = new int[capacity];
+	    this.top = -1;
+	}
+
+	public boolean isEmpty() {
+	    return this.top == -1;
+	}
+
+	public boolean isFull() {
+	    return this.top == this.stack.length - 1;
+	}
+
+	public void push(int k) {
+
+	    if (this.isFull()) throw new RuntimeException();
+
+	    this.stack[++this.top] = k;
+
+	}
+
+	public int peek() {
+	
+	    if (this.isEmpty()) throw new RuntimeException();
+
+	    return this.stack[this.top];
+
+	}
+
+	public int pop() {
+	
+	    if (this.isEmpty()) throw new RuntimeException();
+
+	    return this.stack[this.top--];
+
+	}
+
+	public int size() {
+	    return this.top + 1;
+	}
+
+	public void reverseUntil(int index) {
+	
+	    int idx = 0;
+	    Queue aux = new Queue(index + 1);
+
+	    while (idx <= index) {
+		aux.addLast(this.pop());
+		idx++;
+	    }
+
+	    while (!aux.isEmpty())
+		this.push(aux.removeFirst());
+
+	}
+
+	@Override
+	public String toString() {
+	
+	    String stack = "";
+	    Stack aux = new Stack(this.size());
+
+	    while (!this.isEmpty()) {
+		int current = this.pop();
+		aux.push(current);
+		stack += current;
+		if (!this.isEmpty()) stack += "\n";
+	    }
+
+	    while (!aux.isEmpty())
+		this.push(aux.pop());
+
+	    return stack;
+
+	}
+
 
     }
 
@@ -78,19 +162,22 @@ public class Main {
 
 	Scanner sc = new Scanner(System.in);
 
-	int capacidade = Integer.parseInt(sc.nextLine());
+	Integer capacity = Integer.parseInt(sc.nextLine());
+
+	Stack s = new Stack(capacity);
 
 	String[] line = sc.nextLine().split(" ");
-	int[] values = new int[line.length];
 
 	for (int i = 0; i < line.length; i++)
-	    values[i] = Integer.parseInt(line[i]);
+	    s.push(Integer.parseInt(line[i]));
 
-	int index = Integer.parseInt(sc.nextLine());
+	Integer index = Integer.parseInt(sc.nextLine());
 
 	System.out.println("-");
 
-	inverte(capacidade, index, values);
+	s.reverseUntil(index);
+
+	System.out.println(s);
 
 	sc.close();
 
