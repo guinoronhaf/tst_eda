@@ -1,4 +1,4 @@
-package rotacoes;
+package valor_mais_proximo_de_n;
 
 public class Main {
 
@@ -20,17 +20,10 @@ public class Main {
         private Node root;
         private int size;
 
-        public BST() {
-            this.root = null;
-            this.size = 0;
-        }
-
-        //isEmpty
         public boolean isEmpty() {
             return this.root == null;
         }
 
-        //add
         private void add(Node current, int k) {
             if (current == null) {
                 this.root = new Node(k);
@@ -59,26 +52,45 @@ public class Main {
             this.add(this.root, k);
         }
 
-        //height
-        private int height(Node current) {
+        private int closerToK(Node current, int k, int n) {
+            if ()
+        }
+
+        public int closerToK(int k) {
+            return this.closerToK(this.root, k);
+        }
+
+        private boolean contains(Node current, int k) {
             if (current == null)
-                return -1;
-            return 1 + Math.max(height(current.left), height(current.right));
+                return false;
+            else if (current.v == k)
+                return true;
+            else if (current.v > k)
+                return contains(current.left, k);
+            else
+                return contains(current.right, k);
         }
 
-        public int height() {
-            return this.height(this.root);
-        }
-
-        //size
-        public int size() {
-            return this.size;
+        public boolean contains(int k) {
+            return this.contains(this.root, k);
         }
 
     }
 
     public static void main(String[] args) {
-        System.out.println("testando");
+    
+        BST bst = new BST();
+
+        int[] a = new int[]{10, 8, 1, 9, 20, 18, 25};
+
+        for (int i : a)
+            bst.add(i);
+
+        for (int i : a)
+            System.out.println(bst.contains(i));
+
+        System.out.println(bst.closerToK(23));
+
     }
 
 }
