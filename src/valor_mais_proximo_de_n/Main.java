@@ -4,93 +4,80 @@ public class Main {
 
     public static class Node {
 
-        public int v;
-        public Node parent;
-        public Node left;
-        public Node right;
+	int v;
+	Node parent;
+	Node left;
+	Node right;
 
-        public Node(int v) {
-            this.v = v;
-        }
-
+	public Node(int v) {
+	    this.v = v;
+	}
+    
     }
 
     public static class BST {
 
-        private Node root;
-        private int size;
+	private Node root;
+	private int size;
 
-        public boolean isEmpty() {
-            return this.root == null;
-        }
+	public boolean isEmpty() {
+	    return this.root == null;
+	}
 
-        private void add(Node current, int k) {
-            if (current == null) {
-                this.root = new Node(k);
-                return;
-            }
-            if (current.v > k) {
-                if (current.left == null) {
-                    Node newNode = new Node(k);
-                    current.left = newNode;
-                    newNode.parent = current;
-                    return;
-                }
-                add(current.left, k);
-            } else {
-                if (current.right == null) {
-                    Node newNode = new Node(k);
-                    current.right = newNode;
-                    newNode.parent = current;
-                    return;
-                }
-                add(current.right, k);
-            }
-        }
+	private void add(Node current, int k) {
+	    if (current.v > k) {
+		if (current.left == null) {
+		    Node newNode = new Node(k);
+		    current.left = newNode;
+		    newNode.parent = current;
+		    return;
+		}
+		add(current.left, k);
+	    } else {
+		if (current.right == null) {
+		    Node newNode = new Node(k);
+		    current.right = newNode;
+		    newNode.parent = current;
+		    return;
+		}
+		add(current.right, k);
+	    }
+	}
 
-        public void add(int k) {
-            this.add(this.root, k);
-        }
+	public void add(int k) {
+	    if (this.isEmpty())
+		this.root = new Node(k);
+	    else
+		this.add(this.root, k);
+	    this.size++;
+	}
 
-        private int closerToK(Node current, int k, int n) {
-            if ()
-        }
+	private String preOrder(Node current, String s) {
+	    if (current == null)
+		return "";
+	    else {
+		String newS = s + current.v + " ";
+		return preOrder(current.right, preOrder(current.left, newS));
+	    }
+	}
 
-        public int closerToK(int k) {
-            return this.closerToK(this.root, k);
-        }
+	public String preOrder() {
+	    return this.preOrder(this.root, "");
+	}
 
-        private boolean contains(Node current, int k) {
-            if (current == null)
-                return false;
-            else if (current.v == k)
-                return true;
-            else if (current.v > k)
-                return contains(current.left, k);
-            else
-                return contains(current.right, k);
-        }
+	private int closestToN(Node current, int closest, int n) {
 
-        public boolean contains(int k) {
-            return this.contains(this.root, k);
-        }
 
-    }
-
-    public static void main(String[] args) {
+	}
+ 
+	public int size() {
+	    return this.size;
+	}
     
-        BST bst = new BST();
-
-        int[] a = new int[]{10, 8, 1, 9, 20, 18, 25};
-
-        for (int i : a)
-            bst.add(i);
-
-        for (int i : a)
-            System.out.println(bst.contains(i));
-
-        System.out.println(bst.closerToK(23));
-
+    }
+    
+    public static void main(String[] args) {
+	System.out.println("testando");
     }
 
 }
